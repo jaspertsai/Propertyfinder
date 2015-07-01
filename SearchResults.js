@@ -1,6 +1,7 @@
 'use strict';
  
 var React = require('react-native');
+var PropertyView = require('./PropertyView');
 var {
   StyleSheet,
   Image, 
@@ -44,6 +45,12 @@ class SearchResults extends Component {
  
  rowPressed(propertyGuid) {
   var property = this.props.listings.filter(prop => prop.guid === propertyGuid)[0];
+ 
+  this.props.navigator.push({
+    title: "Property",
+    component: PropertyView,
+    passProps: {property: property}
+  });
 }
   constructor(props) {
     super(props);
