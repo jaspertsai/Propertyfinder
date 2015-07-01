@@ -91,6 +91,21 @@ class SearchPage extends Component {
     message: ''
   };
 }
+
+onLocationPressed() {
+  navigator.geolocation.getCurrentPosition(
+    location => {
+      var search = location.coords.latitude + ',' + location.coords.longitude;
+      this.setState({ searchString: search });
+      var query = urlForQueryAndPage('centre_point', search, 1);
+      this._executeQuery(query);
+    },
+    error => {
+      this.setState({
+        message: 'There was a problem with obtaining your location: ' + error
+      });
+    });
+}
 onSearchTextChanged(event) {
   console.log('onSearchTextChanged');
   this.setState({ searchString: event.nativeEvent.text });
@@ -154,7 +169,8 @@ onSearchPressed() {
     </View>
   <TouchableHighlight style={styles.button}
     underlayColor='#99d9f4'>
-    <Text style={styles.buttonText}>Location</Text>
+    <Text style={styles.buttonText}
+      onPress={this.onLocationPressed.bind(this)}>Location</Text>
   </TouchableHighlight>
   <Image source={require('image!house')} style={styles.image}/>
   {spinner}
